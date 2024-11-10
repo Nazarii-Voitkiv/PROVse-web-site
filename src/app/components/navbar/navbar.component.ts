@@ -16,7 +16,7 @@ import {NzMenuDirective, NzMenuItemComponent} from 'ng-zorro-antd/menu';
     RouterLinkActive,
     NzSiderComponent,
     NzMenuDirective,
-    NzMenuItemComponent
+    NzMenuItemComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'

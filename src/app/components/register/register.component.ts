@@ -5,6 +5,8 @@ import {NzFormControlComponent, NzFormDirective} from 'ng-zorro-antd/form';
 import {NzInputDirective} from 'ng-zorro-antd/input';
 import {AbstractControl, NgModel} from '@angular/forms';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
+import {NgIf} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +18,9 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
     NzInputDirective,
     NzFormDirective,
     NzColDirective,
-    NzButtonComponent
+    NzButtonComponent,
+    NgIf,
+    RouterLink
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
