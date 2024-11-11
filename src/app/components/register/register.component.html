@@ -1,93 +1,57 @@
-<div class="container py-xxl-5 ">
+<div class="container py-xxl-5">
   <div class="row">
     <div class="col-md-12">
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="card card-outline-secondary">
             <div class="card-header">
-              <h3 class="mb-0">Sign Up</h3>
+              <h3 class="m-2">Sign Up</h3>
             </div>
-
             <div class="card-body">
-              <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Working...">
-                <form nz-form autocomplete="off" class="form" role="form">
-                  <div class="form-group">
-                    <nz-form-item >
-                      <nz-form-control nzHasFeedback [nzErrorTip]="userErrorTpl">
-                        <label for="inputName" class="mb-1">Name</label>
-                        <input nz-input class="form-control" id="inputName" placeholder="Full name" type="text"/>
-                        <ng-template #userErrorTpl let-control>
-                          <ng-container *ngIf="control.hasError('required')">
-                            Please input your username!
-                          </ng-container>
-                        </ng-template>
-                      </nz-form-control>
-                    </nz-form-item>
+              <form autocomplete="off" class="form" role="form" [formGroup]="validateForm">
+
+                <div class="form-group">
+                  <label for="inputName" class="fs-6 mb-1">Name</label>
+                  <input class="form-control" id="inputName" placeholder="Full name" type="text" formControlName="name">
+                  <div *ngIf="validateForm.get('name')?.invalid && validateForm.get('name')?.touched" class="text-danger">
+                    Name is required.
                   </div>
+                </div>
 
-                  <div class="form-group">
-                    <nz-form-item>
-                      <nz-form-control nzHasFeedback [nzErrorTip]="'The input is not valid E-mail!'">
-                        <label for="inputEmail" class="mb-1 mt-3">Email</label>
-                        <input nz-input class="form-control" id="inputEmail" placeholder="Email" required="" type="email" />
-                      </nz-form-control>
-                    </nz-form-item>
+                <div class="form-group">
+                  <label for="inputEmail3" class="fs-6 mb-1 mt-3">Email</label>
+                  <input class="form-control" id="inputEmail3" placeholder="Email" required="" type="email" formControlName="email">
+                  <div *ngIf="validateForm.get('email')?.invalid && validateForm.get('email')?.touched" class="text-danger">
+                    Enter a valid email address.
                   </div>
+                </div>
 
-
-                  <div class="form-group">
-                    <nz-form-item>
-                      <nz-form-control nzHasFeedback [nzErrorTip]="'errorPass'">
-                        <label for="inputPassword" class="mb-1 mt-3">Password</label>
-                        <input nz-input class="form-control" id="inputPassword" placeholder="Password" required="" type="password" />
-                        <ng-template #errorPass let-control>
-                          <ng-container *ngIf="control.hasError('required')">
-                            Password Is Required!
-                          </ng-container>
-                          <ng-container *ngIf="control.hasError('pattern')">
-                            Password Should Contain 8 Characters, 1 Lowercase, 1 Uppercase, 1 Number, and 1 Special Character
-                          </ng-container>
-                        </ng-template>
-                      </nz-form-control>
-                    </nz-form-item>
+                <div class="form-group">
+                  <label for="inputPassword3" class="fs-6 mb-1 mt-3">Password</label>
+                  <input class="form-control" id="inputPassword3" placeholder="Password" required="" type="password" formControlName="password" >
+                  <small class="form-text text-muted" id="passwordHelpBlock">Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.</small>
+                  <div *ngIf="validateForm.get('password')?.invalid && validateForm.get('password')?.touched" class="text-danger">
+                    Password must be 8-20 characters long and contain both letters and numbers.
                   </div>
+                </div>
 
-                  <div class="form-group">
-                    <nz-form-item>
-                      <nz-form-control nzHasFeedback [nzErrorTip]="'errorTpl'">
-                        <label for="inputVerify" class="mb-1 mt-3">Verify</label>
-                        <input class="form-control" id="inputVerify" placeholder="Password (again)" required="" type="password"/>
-                        <ng-template #errorTpl let-control>
-                          <ng-container *ngIf="control.hasError('required')">
-                            Please confirm your password!
-                          </ng-container>
-                          <ng-container *ngIf="control.hasError('confirm')">
-                            Two passwords that you enter are inconsistent!
-                          </ng-container>
-                        </ng-template>
-                      </nz-form-control>
-                    </nz-form-item>
+                <div class="form-group">
+                  <label for="inputVerify3" class="fs-6 mb-1 mt-3">Verify</label>
+                  <input class="form-control" id="inputVerify3" placeholder="Password (again)" required type="password" formControlName="confirmPassword">
+                  <div *ngIf="validateForm.get('confirmPassword')?.invalid && validateForm.get('confirmPassword')?.touched" class="text-danger">
+                    Please confirm your password.
                   </div>
+                </div>
 
-
-                  <!--          <nz-form-item nz-row class="register-area">-->
-                  <!--            <nz-form-control [nzSpan]="14" [nzOffset]="6">-->
-                  <!--              <button nz-button nzType="primary">Register</button>-->
-                  <!--            </nz-form-control>-->
-                  <!--          </nz-form-item>-->
-
-                  <div class="form-group float-end mt-3">
-                    <button class="btn btn-primary btn-lg" type="submit">Register</button>
-                    <a class="mx-2">Or</a>
-
-                    <a routerLink="/login" class="me-2">login now!</a>
-                  </div>
-                </form>
-              </nz-spin>
+                <div class="form-group float-end mt-3">
+                  <button class="btn btn-primary btn-lg btnHover" type="submit" [disabled]="validateForm.invalid" (click)="register()">Register</button>
+                </div>
+              </form>
             </div>
-          </div><!-- /form card register -->
+          </div>
         </div>
       </div>
     </div><!--/col-->
   </div><!--/row-->
 </div><!--/container-->
+

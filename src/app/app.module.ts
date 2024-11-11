@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -11,7 +12,8 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    NzLayoutModule
+    NzLayoutModule,
+    HttpClientModule
   ]
 })
 export class AppModule { }
