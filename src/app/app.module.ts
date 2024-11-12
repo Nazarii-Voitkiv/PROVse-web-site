@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminModule } from './admin/admin.module';
+import { UserModule } from './user/user.module';
 
 
 
@@ -13,7 +15,9 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     ReactiveFormsModule,
     NzLayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    AdminModule,
+    UserModule
   ]
 })
 export class AppModule { }
