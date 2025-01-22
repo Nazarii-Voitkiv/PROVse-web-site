@@ -89,7 +89,7 @@ const OrderForm = () => {
             Замовити послугу
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Заповніть форму, і ми зв'яжемося з вами найближчим часом для уточнення деталей
+            Заповніть форму, і ми зв&#39;яжемося з вами найближчим часом для уточнення деталей
           </p>
         </motion.div>
 
@@ -102,7 +102,7 @@ const OrderForm = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="name" className="block text-gray-700 font-medium">
-                  Ваше ім'я
+                  Ваше ім&#39;я
                 </label>
                 <input
                   type="text"
@@ -112,7 +112,7 @@ const OrderForm = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  placeholder="Введіть ваше ім'я"
+                  placeholder="Введіть ваше ім&#39;я"
                 />
               </div>
 
