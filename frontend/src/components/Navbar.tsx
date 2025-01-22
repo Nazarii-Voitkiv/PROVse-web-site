@@ -79,8 +79,8 @@ const Navbar = () => {
           {/* Логотип */}
           <button onClick={scrollToTop} className="text-2xl font-bold">
             <span className="text-blue-600">PRO</span>
-            <span className="text-green-500">Все</span>
-            <span className="text-blue-500 ml-2 text-xl font-semibold">Сила</span>
+            <span className="text-green-500">Vse</span>
+            <span className="text-blue-500 ml-2 text-xl font-semibold">Syla</span>
           </button>
 
           {/* Основне меню - десктоп */}
