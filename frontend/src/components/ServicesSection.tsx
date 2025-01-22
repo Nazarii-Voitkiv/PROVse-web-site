@@ -95,7 +95,7 @@ const ServicesSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center py-20 bg-white" ref={ref}>
+    <section id="services" className="relative min-h-screen flex items-center py-20 bg-white" ref={ref}>
       {/* Контент */}
       <motion.div 
         className="container mx-auto px-4"

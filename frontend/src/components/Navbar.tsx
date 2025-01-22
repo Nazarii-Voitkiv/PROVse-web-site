@@ -18,7 +18,34 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const menuItems = ['Послуги', 'Про нас', 'Замовити послугу', 'Контакти'];
+  const menuItems = [
+    { name: 'Послуги', id: 'services' },
+    { name: 'Про нас', id: 'why-us' },
+    { name: 'Замовити послугу', id: 'order' },
+    { name: 'Контакти', id: 'footer' }
+  ];
+
+  const scrollToSection = (id: string) => {
+    setIsMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      const navbarHeight = 80; // висота навбару
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const menuVariants = {
     closed: {
@@ -51,21 +78,21 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Логотип */}
-          <Link href="/" className="text-2xl font-bold">
+          <button onClick={scrollToTop} className="text-2xl font-bold">
             <span className="text-blue-600">PRO</span>
             <span className="text-green-500">Vse</span>
-          </Link>
+          </button>
 
           {/* Основне меню - десктоп */}
           <div className="hidden xl:flex items-center space-x-10">
             {menuItems.map((item) => (
-              <Link
-                key={item}
-                href={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.id)}
                 className="text-gray-600 hover:text-blue-600 transition-colors"
               >
-                {item}
-              </Link>
+                {item.name}
+              </button>
             ))}
           </div>
 
@@ -79,6 +106,7 @@ const Navbar = () => {
               {process.env.NEXT_PUBLIC_PHONE_DISPLAY}
             </a>
             <button 
+              onClick={() => scrollToSection('order')}
               className="bg-green-500 text-white px-6 py-2.5 rounded-lg font-semibold 
                          hover:bg-green-600 transition-all duration-200 shadow-sm 
                          hover:shadow-md transform hover:-translate-y-0.5"
@@ -111,17 +139,16 @@ const Navbar = () => {
               <div className="flex flex-col space-y-6">
                 {menuItems.map((item) => (
                   <motion.div
-                    key={item}
+                    key={item.name}
                     variants={itemVariants}
                     className="border-b border-gray-100 pb-4"
                   >
-                    <Link
-                      href={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                    <button
+                      onClick={() => scrollToSection(item.id)}
                       className="text-gray-600 hover:text-blue-600 text-lg transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
                     >
-                      {item}
-                    </Link>
+                      {item.name}
+                    </button>
                   </motion.div>
                 ))}
                 
@@ -133,9 +160,9 @@ const Navbar = () => {
                     {process.env.NEXT_PUBLIC_PHONE_DISPLAY}
                   </a>
                   <button
+                    onClick={() => scrollToSection('order')}
                     className="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
                              hover:bg-green-600 transition-all duration-200"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     Зателефонувати вам?
                   </button>

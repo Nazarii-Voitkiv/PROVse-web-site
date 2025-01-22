@@ -73,6 +73,7 @@ const WhyUsSection = () => {
 
   return (
     <section 
+      id="why-us"
       ref={ref}
       className="relative min-h-screen flex items-center py-32"
       style={{

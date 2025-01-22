@@ -21,7 +21,7 @@ const HeroSection = () => {
   }, [images.length]);
 
   return (
-    <section className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
+    <section id="hero" className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden">
       {/* Фонові зображення з анімацією */}
       <div className="fixed top-0 left-0 w-full h-full -z-10">
         {images.map((image, index) => (
