@@ -105,7 +105,7 @@ const ServiceOrderModal = ({ isOpen, onClose, initialService }: ServiceOrderModa
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
-                  Ваше ім'я
+                  Ваше ім&apos;я
                 </label>
                 <input
                   type="text"
@@ -115,7 +115,7 @@ const ServiceOrderModal = ({ isOpen, onClose, initialService }: ServiceOrderModa
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  placeholder="Введіть ваше ім'я"
+                  placeholder="Введіть ваше ім&apos;я"
                 />
               </div>
 

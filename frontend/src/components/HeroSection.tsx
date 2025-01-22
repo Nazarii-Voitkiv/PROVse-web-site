@@ -21,7 +21,7 @@ const HeroSection = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, []);
 
   return (
     <>

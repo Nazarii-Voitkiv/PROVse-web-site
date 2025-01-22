@@ -1,6 +1,6 @@
 'use client';
 
-import { FaTruck, FaTools, FaHome, FaHammer, FaTrash, FaTruckLoading } from 'react-icons/fa';
+import { FaTruck, FaTools, FaHammer, FaTrash, FaTruckLoading } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
