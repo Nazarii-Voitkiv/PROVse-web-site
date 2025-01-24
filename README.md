@@ -34,7 +34,7 @@ npm install
 yarn install
 ```
 
-3. Create `.env.local` file in the project root with the following variables / Створіть файл `.env.local` в корені проекту з наступними змінними:
+3. Create `.env` file in the project root with the following variables / Створіть файл `.env` в корені проекту з наступними змінними:
 ```env
 NEXT_PUBLIC_PHONE_NUMBER="your-phone-number"
 NEXT_PUBLIC_PHONE_DISPLAY="your-display-phone-number"
@@ -71,7 +71,7 @@ frontend/
 │   │   └── Toast.tsx           # Notifications component / Компонент сповіщень
 │   └── styles/
 │       └── globals.css         # Global styles / Глобальні стилі
-└── .env.local                  # Local environment variables / Локальні змінні середовища
+└── .env                        # Local environment variables / Локальні змінні середовища
 ```
 
 ## 🤖 Telegram Bot Setup / Налаштування Telegram бота
@@ -80,11 +80,11 @@ frontend/
 2. Get the bot token / Отримайте токен бота
 3. Start a chat with your bot / Почніть чат з вашим ботом
 4. Get your Chat ID via [@userinfobot](https://t.me/userinfobot) / Отримайте ваш Chat ID через [@userinfobot](https://t.me/userinfobot)
-5. Add the obtained data to `.env.local` / Додайте отримані дані в `.env.local`
+5. Add the obtained data to `.env` / Додайте отримані дані в `.env`
 
 ## 🔒 Security / Безпека
 
-- Don't commit `.env.local` file to the repository / Не комітьте файл `.env.local` до репозиторію
+- Don't commit `.env` file to the repository / Не комітьте файл `.env` до репозиторію
 - Keep the bot token secret / Зберігайте токен бота в секреті
 - Use environment variables in production / Використовуйте environment variables в production
 
