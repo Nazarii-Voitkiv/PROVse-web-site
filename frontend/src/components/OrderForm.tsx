@@ -3,12 +3,15 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
+import { createOrder } from '../services/api';
+import toast from 'react-hot-toast';
 
 const services = [
   'Вантажні роботи',
   'Різноробочі послуги',
   'Переїзди',
-  'Демонтажні роботи'
+  'Демонтажні роботи',
+  'Вивіз сміття'
 ];
 
 const OrderForm = () => {
@@ -20,6 +23,7 @@ const OrderForm = () => {
     service: '',
     comment: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const containerVariants = {
     hidden: { 
@@ -60,10 +64,37 @@ const OrderForm = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Тут буде логіка відправки форми
-    console.log('Form submitted:', formData);
+    
+    if (!formData.service) {
+      toast.error('Будь ласка, оберіть послугу');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await createOrder({
+        name: formData.name,
+        phone: formData.phone,
+        service: formData.service,
+        question: formData.comment
+      });
+      
+      toast.success('Дякуємо! Ми зв&apos;яжемося з вами найближчим часом');
+      setFormData({
+        name: '',
+        phone: '',
+        service: '',
+        comment: ''
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Помилка при відправці форми. Спробуйте пізніше');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -172,11 +203,13 @@ const OrderForm = () => {
             <div className="mt-8">
               <button
                 type="submit"
-                className="w-full bg-green-500 text-white py-4 px-8 rounded-lg font-semibold 
+                disabled={isSubmitting}
+                className={`w-full bg-green-500 text-white py-4 px-8 rounded-lg font-semibold 
                          hover:bg-green-600 transform hover:-translate-y-0.5 transition-all duration-200
-                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
+                         ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                Замовити зараз
+                {isSubmitting ? 'Відправка...' : 'Замовити зараз'}
               </button>
             </div>
           </motion.form>
