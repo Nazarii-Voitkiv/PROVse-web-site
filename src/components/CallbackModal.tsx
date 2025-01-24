@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
-import { createOrder } from '../services/api';
-import toast from 'react-hot-toast';
+import { useToast } from './Toast';
 
 interface CallbackModalProps {
   isOpen: boolean;
@@ -18,27 +17,38 @@ interface FormData {
 }
 
 const CallbackModal = ({ isOpen, onClose }: CallbackModalProps) => {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     phone: '',
     question: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
     try {
-      await createOrder(formData);
-      toast.success('Дякуємо! Ми зв\'яжемося з вами найближчим часом');
+      const response = await fetch('/api/telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'callback',
+          formData
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      console.log('Form submitted successfully');
       onClose();
       setFormData({ name: '', phone: '', question: '' });
+      showToast('Дякуємо! Ми зв\'яжемося з вами найближчим часом', 'success');
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Помилка при відправці форми. Спробуйте пізніше');
-    } finally {
-      setIsSubmitting(false);
+      showToast('Помилка при відправці форми. Спробуйте пізніше', 'error');
     }
   };
 
@@ -79,7 +89,7 @@ const CallbackModal = ({ isOpen, onClose }: CallbackModalProps) => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
-                  Ваше ім'я
+                  Ваше ім&apos;я
                 </label>
                 <input
                   type="text"
@@ -89,7 +99,7 @@ const CallbackModal = ({ isOpen, onClose }: CallbackModalProps) => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  placeholder="Введіть ваше ім'я"
+                  placeholder="Введіть ваше ім&apos;я"
                 />
               </div>
 
@@ -125,13 +135,11 @@ const CallbackModal = ({ isOpen, onClose }: CallbackModalProps) => {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className={`w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
+                className="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
                          hover:bg-green-600 transition-all duration-200 shadow-sm 
-                         hover:shadow-md transform hover:-translate-y-0.5
-                         ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                         hover:shadow-md transform hover:-translate-y-0.5"
               >
-                {isSubmitting ? 'Відправка...' : 'Надіслати'}
+                Надіслати
               </button>
             </form>
           </motion.div>

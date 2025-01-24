@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
-import { createOrder } from '../services/api';
-import toast from 'react-hot-toast';
+import { useToast } from './Toast';
 
 interface ServicesModalProps {
   isOpen: boolean;
@@ -27,40 +26,43 @@ const services = [
 ];
 
 const ServicesModal = ({ isOpen, onClose }: ServicesModalProps) => {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     phone: '',
     services: [],
     question: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (formData.services.length === 0) {
-      toast.error('Будь ласка, оберіть хоча б одну послугу');
-      return;
-    }
-
-    setIsSubmitting(true);
-
     try {
-      await createOrder({
-        name: formData.name,
-        phone: formData.phone,
-        services: formData.services,
-        question: formData.question
+      const response = await fetch('/api/telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'service',
+          formData: {
+            ...formData,
+            service: formData.services.join(', '),
+            description: formData.question
+          }
+        }),
       });
-      
-      toast.success('Дякуємо! Ми зв&apos;яжемося з вами найближчим часом');
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      console.log('Services form submitted successfully');
       onClose();
       setFormData({ name: '', phone: '', services: [], question: '' });
+      showToast('Дякуємо! Ми зв\'яжемося з вами найближчим часом', 'success');
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Помилка при відправці форми. Спробуйте пізніше');
-    } finally {
-      setIsSubmitting(false);
+      showToast('Помилка при відправці форми. Спробуйте пізніше', 'error');
     }
   };
 
@@ -178,13 +180,11 @@ const ServicesModal = ({ isOpen, onClose }: ServicesModalProps) => {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className={`w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
+                className="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
                          hover:bg-green-600 transition-all duration-200 shadow-sm 
-                         hover:shadow-md transform hover:-translate-y-0.5
-                         ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                         hover:shadow-md transform hover:-translate-y-0.5"
               >
-                {isSubmitting ? 'Відправка...' : 'Надіслати'}
+                Надіслати
               </button>
             </form>
           </motion.div>

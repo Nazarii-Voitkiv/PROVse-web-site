@@ -3,15 +3,13 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { createOrder } from '../services/api';
-import toast from 'react-hot-toast';
+import { useToast } from './Toast';
 
 const services = [
   'Вантажні роботи',
   'Різноробочі послуги',
   'Переїзди',
-  'Демонтажні роботи',
-  'Вивіз сміття'
+  'Демонтажні роботи'
 ];
 
 const OrderForm = () => {
@@ -23,7 +21,7 @@ const OrderForm = () => {
     service: '',
     comment: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showToast } = useToast();
 
   const containerVariants = {
     hidden: { 
@@ -66,34 +64,36 @@ const OrderForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.service) {
-      toast.error('Будь ласка, оберіть послугу');
-      return;
-    }
-
-    setIsSubmitting(true);
-
     try {
-      await createOrder({
-        name: formData.name,
-        phone: formData.phone,
-        service: formData.service,
-        question: formData.comment
+      const response = await fetch('/api/telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'service',
+          formData: {
+            ...formData,
+            description: formData.comment // Align with API expectations
+          }
+        }),
       });
-      
-      toast.success('Дякуємо! Ми зв&apos;яжемося з вами найближчим часом');
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      console.log('Form submitted successfully');
       setFormData({
         name: '',
         phone: '',
         service: '',
         comment: ''
       });
+      showToast('Дякуємо! Ми зв\'яжемося з вами найближчим часом', 'success');
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('Помилка при відправці форми. Спробуйте пізніше');
-    } finally {
-      setIsSubmitting(false);
+      showToast('Помилка при відправці форми. Спробуйте пізніше', 'error');
     }
   };
 
@@ -203,13 +203,11 @@ const OrderForm = () => {
             <div className="mt-8">
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className={`w-full bg-green-500 text-white py-4 px-8 rounded-lg font-semibold 
+                className="w-full bg-green-500 text-white py-4 px-8 rounded-lg font-semibold 
                          hover:bg-green-600 transform hover:-translate-y-0.5 transition-all duration-200
-                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2
-                         ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                         focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
-                {isSubmitting ? 'Відправка...' : 'Замовити зараз'}
+                Замовити зараз
               </button>
             </div>
           </motion.form>
