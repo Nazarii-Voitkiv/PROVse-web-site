@@ -3,7 +3,7 @@ import { sendOrderNotification } from '../services/telegram.service';
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, phone, service, question } = req.body;
+    const { name, phone, service, services, question } = req.body;
 
     // Валідація
     if (!name || !phone) {
@@ -19,6 +19,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
       name,
       phone,
       service,
+      services,
       question
     });
 

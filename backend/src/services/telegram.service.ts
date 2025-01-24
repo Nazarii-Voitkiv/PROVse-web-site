@@ -1,14 +1,10 @@
 import TelegramBot from 'node-telegram-bot-api';
 import dotenv from 'dotenv';
 
-// Завантажуємо змінні оточення
 dotenv.config();
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const chatId = process.env.TELEGRAM_CHAT_ID;
-
-console.log('Token:', token);
-console.log('Chat ID:', chatId);
 
 if (!token || !chatId) {
   throw new Error('TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not found in environment variables');
@@ -27,9 +23,7 @@ interface OrderData {
 export const sendOrderNotification = async (data: OrderData) => {
   try {
     const message = formatOrderMessage(data);
-    console.log('Sending message to Telegram:', message);
     await bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
-    console.log('Message sent successfully');
     return true;
   } catch (error) {
     console.error('Error sending Telegram notification:', error);
@@ -44,7 +38,7 @@ const formatOrderMessage = (data: OrderData): string => {
   message += `<b>👤 Ім'я:</b> ${name}\n`;
   message += `<b>📞 Телефон:</b> ${phone}\n`;
   
-  if (services && services.length > 0) {
+  if (Array.isArray(services) && services.length > 0) {
     message += `\n<b>🛠 Обрані послуги:</b>\n`;
     services.forEach((service, index) => {
       message += `${index + 1}. ${service}\n`;
