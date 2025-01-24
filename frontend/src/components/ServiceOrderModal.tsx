@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { createOrder } from '../services/api';
+import toast from 'react-hot-toast';
 
 interface ServiceOrderModalProps {
   isOpen: boolean;
@@ -32,8 +34,8 @@ const ServiceOrderModal = ({ isOpen, onClose, initialService }: ServiceOrderModa
     service: initialService || services[0],
     question: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Оновлюємо вибрану послугу коли змінюється initialService
   useEffect(() => {
     if (initialService) {
       setFormData(prev => ({
@@ -59,12 +61,17 @@ const ServiceOrderModal = ({ isOpen, onClose, initialService }: ServiceOrderModa
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     try {
-      // TODO: Додати відправку даних на бекенд
-      console.log('Form submitted:', formData);
+      await createOrder(formData);
+      toast.success('Дякуємо! Ми зв\'яжемося з вами найближчим часом');
       handleClose();
     } catch (error) {
       console.error('Error submitting form:', error);
+      toast.error('Помилка при відправці форми. Спробуйте пізніше');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -105,7 +112,7 @@ const ServiceOrderModal = ({ isOpen, onClose, initialService }: ServiceOrderModa
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
-                  Ваше ім&apos;я
+                  Ваше ім'я
                 </label>
                 <input
                   type="text"
@@ -115,7 +122,7 @@ const ServiceOrderModal = ({ isOpen, onClose, initialService }: ServiceOrderModa
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                  placeholder="Введіть ваше ім&apos;я"
+                  placeholder="Введіть ваше ім'я"
                 />
               </div>
 
@@ -171,11 +178,13 @@ const ServiceOrderModal = ({ isOpen, onClose, initialService }: ServiceOrderModa
 
               <button
                 type="submit"
-                className="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
+                disabled={isSubmitting}
+                className={`w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
                          hover:bg-green-600 transition-all duration-200 shadow-sm 
-                         hover:shadow-md transform hover:-translate-y-0.5"
+                         hover:shadow-md transform hover:-translate-y-0.5
+                         ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                Надіслати
+                {isSubmitting ? 'Відправка...' : 'Надіслати'}
               </button>
             </form>
           </motion.div>

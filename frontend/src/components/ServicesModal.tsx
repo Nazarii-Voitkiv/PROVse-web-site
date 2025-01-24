@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { createOrder } from '../services/api';
+import toast from 'react-hot-toast';
 
 interface ServicesModalProps {
   isOpen: boolean;
@@ -31,16 +33,34 @@ const ServicesModal = ({ isOpen, onClose }: ServicesModalProps) => {
     services: [],
     question: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (formData.services.length === 0) {
+      toast.error('Будь ласка, оберіть хоча б одну послугу');
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
-      // TODO: Додати відправку даних на бекенд
-      console.log('Form submitted:', formData);
+      await createOrder({
+        name: formData.name,
+        phone: formData.phone,
+        services: formData.services,
+        question: formData.question
+      });
+      
+      toast.success('Дякуємо! Ми зв&apos;яжемося з вами найближчим часом');
       onClose();
       setFormData({ name: '', phone: '', services: [], question: '' });
     } catch (error) {
       console.error('Error submitting form:', error);
+      toast.error('Помилка при відправці форми. Спробуйте пізніше');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -158,11 +178,13 @@ const ServicesModal = ({ isOpen, onClose }: ServicesModalProps) => {
 
               <button
                 type="submit"
-                className="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
+                disabled={isSubmitting}
+                className={`w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
                          hover:bg-green-600 transition-all duration-200 shadow-sm 
-                         hover:shadow-md transform hover:-translate-y-0.5"
+                         hover:shadow-md transform hover:-translate-y-0.5
+                         ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                Надіслати
+                {isSubmitting ? 'Відправка...' : 'Надіслати'}
               </button>
             </form>
           </motion.div>

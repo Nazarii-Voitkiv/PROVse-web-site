@@ -1,10 +1,18 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 interface FormData {
   name: string;
   phone: string;
   service: string;
   comment: string;
+}
+
+interface OrderData {
+  name: string;
+  phone: string;
+  service?: string;
+  services?: string[];
+  question?: string;
 }
 
 export const api = {
@@ -40,6 +48,29 @@ export const submitForm = async (formData: FormData): Promise<void> => {
     }
   } catch (error) {
     console.error('Error submitting form:', error);
+    throw error;
+  }
+};
+
+export const createOrder = async (data: OrderData) => {
+  try {
+    const response = await fetch(`${API_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || 'Failed to create order');
+    }
+
+    return result;
+  } catch (error) {
+    console.error('Error creating order:', error);
     throw error;
   }
 };
