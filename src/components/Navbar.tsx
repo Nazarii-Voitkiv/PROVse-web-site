@@ -81,8 +81,8 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-20">
             {/* Логотип */}
             <button onClick={scrollToTop} className="text-2xl font-bold">
-              <span className="text-blue-600">PRO</span>
-              <span className="text-green-500">Vse</span>
+              <span className="text-green-500">PRO</span>
+              <span className="text-blue-500">Vse</span>
               <span className="text-blue-500 ml-2 text-xl font-semibold">Syla</span>
             </button>
 
