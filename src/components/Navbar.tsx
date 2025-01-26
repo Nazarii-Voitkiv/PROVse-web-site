@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import CallbackModal from './CallbackModal';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +20,6 @@ const Navbar = () => {
   const menuItems = [
     { name: 'Послуги', id: 'services' },
     { name: 'Про нас', id: 'why-us' },
-    { name: 'Замовити послугу', id: 'order' },
     { name: 'Контакти', id: 'footer' }
   ];
 
@@ -108,14 +105,14 @@ const Navbar = () => {
               >
                 {process.env.NEXT_PUBLIC_PHONE_DISPLAY}
               </a>
-              <button 
-                onClick={() => setIsModalOpen(true)}
+              <a 
+                href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
                 className="bg-green-500 text-white px-6 py-2.5 rounded-lg font-semibold 
                            hover:bg-green-600 transition-all duration-200 shadow-sm 
                            hover:shadow-md transform hover:-translate-y-0.5"
               >
-                Зателефонувати вам?
-              </button>
+                Зателефонувати
+              </a>
             </div>
 
             {/* Бургер меню - мобільний */}
@@ -162,16 +159,13 @@ const Navbar = () => {
                     >
                       {process.env.NEXT_PUBLIC_PHONE_DISPLAY}
                     </a>
-                    <button
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setIsModalOpen(true);
-                      }}
-                      className="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
-                               hover:bg-green-600 transition-all duration-200"
+                    <a
+                      href={`tel:${process.env.NEXT_PUBLIC_PHONE_NUMBER}`}
+                      className="block w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold 
+                               hover:bg-green-600 transition-all duration-200 text-center"
                     >
-                      Зателефонувати вам?
-                    </button>
+                      Зателефонувати
+                    </a>
                   </motion.div>
                 </div>
               </div>
@@ -179,12 +173,6 @@ const Navbar = () => {
           )}
         </AnimatePresence>
       </nav>
-
-      {/* Модальне вікно */}
-      <CallbackModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </>
   );
 };

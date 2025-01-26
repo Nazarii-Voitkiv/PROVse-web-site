@@ -4,8 +4,6 @@ import { FaTruck, FaTools, FaHammer, FaTrash, FaTruckLoading } from 'react-icons
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { useState } from 'react';
-import ServiceOrderModal from './ServiceOrderModal';
 
 const services = [
   {
@@ -71,9 +69,6 @@ const services = [
 ];
 
 const ServicesSection = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState('');
-
   const ref = useRef(null);
   const isInView = useInView(ref, { 
     once: true, 
@@ -117,11 +112,6 @@ const ServicesSection = () => {
         ease: [0.25, 0.1, 0.25, 1]
       }
     }
-  };
-
-  const handleOrderClick = (service: string) => {
-    setSelectedService(service);
-    setIsModalOpen(true);
   };
 
   return (
@@ -181,14 +171,6 @@ const ServicesSection = () => {
                     <div className="text-sm text-gray-500 mb-4">
                       {service.minDescription}
                     </div>
-                    <button
-                      onClick={() => handleOrderClick(service.title)}
-                      className="bg-green-500 text-white px-6 py-2 rounded-lg 
-                                 font-semibold transition-all duration-200 w-full
-                                 hover:bg-green-600 transform hover:-translate-y-0.5"
-                    >
-                      Замовити
-                    </button>
                   </div>
                 </motion.div>
               );
@@ -196,13 +178,6 @@ const ServicesSection = () => {
           </div>
         </motion.div>
       </section>
-
-      {/* Модальне вікно */}
-      <ServiceOrderModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        initialService={selectedService}
-      />
     </>
   );
 };

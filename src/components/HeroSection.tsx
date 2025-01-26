@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import ServicesModal from './ServicesModal';
 
 const images = [
   '/images/hero/hero-bg.jpg',
@@ -13,7 +12,6 @@ const images = [
 
 const HeroSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,23 +65,9 @@ const HeroSection = () => {
             <p className="text-xl mb-8 text-gray-200 opacity-85">
               Переїзди, демонтаж, вивіз сміття та інші фізичні роботи
             </p>
-            <button 
-              onClick={() => setIsModalOpen(true)}
-              className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold 
-                         hover:bg-green-600 transition-all duration-200 shadow-lg 
-                         hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              Замовити послуги
-            </button>
           </motion.div>
         </div>
       </section>
-
-      {/* Модальне вікно */}
-      <ServicesModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </>
   );
 };
